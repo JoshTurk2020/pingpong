@@ -108,7 +108,7 @@
       questionElement.textContent = questions[currentQuestion].question;
     }
 
-    function checkAnswer() {
+   function checkAnswer() {
       const userAnswer = answerInput.value.trim().toLowerCase();
       if (userAnswer === questions[currentQuestion].answer.toLowerCase()) {
         if (currentPlayer === 1) {
@@ -125,6 +125,7 @@
         moveBall();
       } else {
         switchPlayer();
+        moveBall();
       }
       answerInput.value = "";
     }
@@ -145,15 +146,16 @@
       const ballRect = ball.getBoundingClientRect();
 
       if (currentPlayer === 1) {
-        ball.style.left = player2Rect.left - ballRect.width + "px";
-      } else {
         ball.style.left = player1Rect.right + "px";
+      } else {
+        ball.style.left = player2Rect.left - ballRect.width + "px";
       }
     }
 
     submitButton.addEventListener("click", checkAnswer);
     showQuestion();
     updateScore();
+    moveBall();
   </script>
 </body>
 </html>
