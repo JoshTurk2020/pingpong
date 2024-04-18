@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Grammar Ping Pong</title>
+  <style>
+    body {
+      background-color: #f1f1f1;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+    }
+    #game-container {
+      margin: 20px auto;
+      width: 600px;
+      height: 400px;
+      background-color: #fff;
+      border: 2px solid #333;
+      position: relative;
+    }
+    #ball {
+      width: 20px;
+      height: 20px;
+      background-color: #ff5722;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .paddle {
+      width: 10px;
+      height: 80px;
+      background-color: #333;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    #player1 {
+      left: 20px;
+    }
+    #player2 {
+      right: 20px;
+    }
+    #question {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    #answer {
+      margin-top: 10px;
+      padding: 5px;
+      font-size: 16px;
+    }
+    #submit {
+      margin-top: 10px;
+      padding: 5px 10px;
+      font-size: 16px;
+    }
+    #score {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Grammar Ping Pong</h1>
+  <div id="game-container">
+    <div id="ball"></div>
+    <div class="paddle" id="player1"></div>
+    <div class="paddle" id="player2"></div>
+  </div>
+  <div id="question"></div>
+  <input type="text" id="answer" placeholder="Enter your answer">
+  <button id="submit">Submit</button>
+  <div id="score"></div>
+
+  <script>
+    // Questions and answers
+    const questions = [
+      {
+        question: "Complete the sentence: If I ___ harder, I will pass the exam.",
+        answer: "study"
+      },
+      {
+        question: "Complete the sentence: She ___ the dishes if she has time.",
+        answer: "will wash"
+      },
+      {
+        question: "Complete the sentence: This book is ___ than that one.",
+        answer: "better"
+      },
+      // Add more questions here
+    ];
+
+    let currentQuestion = 0;
+    let player1Score = 0;
+    let player2Score = 0;
+    let currentPlayer = 1;
+
+    const questionElement = document.getElementById("question");
+    const answerInput = document.getElementById("answer");
+    const submitButton = document.getElementById("submit");
+    const scoreElement = document.getElementById("score");
+    const ball = document.getElementById("ball");
+
+    function showQuestion() {
+      questionElement.textContent = questions[currentQuestion].question;
+    }
+
+    function checkAnswer() {
+      const userAnswer = answerInput.value.trim().toLowerCase();
+      if (userAnswer === questions[currentQuestion].answer.toLowerCase()) {
+        if (currentPlayer === 1) {
+          player1Score++;
+        } else {
+          player2Score++;
+        }
+        currentQuestion++;
+        if (currentQuestion === questions.length) {
+          currentQuestion = 0;
+        }
+        showQuestion();
+        updateScore();
+        moveBall();
+      } else {
+        switchPlayer();
+      }
+      answerInput.value = "";
+    }
+
+    function updateScore() {
+      scoreElement.textContent = `Player 1: ${player1Score} | Player 2: ${player2Score}`;
+    }
+
+    function switchPlayer() {
+      currentPlayer = currentPlayer === 1 ? 2 : 1;
+    }
+
+    function moveBall() {
+      const player1 = document.getElementById("player1");
+      const player2 = document.getElementById("player2");
+      const player1Rect = player1.getBoundingClientRect();
+      const player2Rect = player2.getBoundingClientRect();
+      const ballRect = ball.getBoundingClientRect();
+
+      if (currentPlayer === 1) {
+        ball.style.left = player2Rect.left - ballRect.width + "px";
+      } else {
+        ball.style.left = player1Rect.right + "px";
+      }
+    }
+
+    submitButton.addEventListener("click", checkAnswer);
+    showQuestion();
+    updateScore();
+  </script>
+</body>
+</html>
