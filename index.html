@@ -28,6 +28,8 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      transition: left 0.5s linear;
+    }
     }
     .paddle {
       width: 10px;
@@ -75,6 +77,7 @@
   <button id="submit">Submit</button>
   <div id="score"></div>
 
+
   <script>
     // Questions and answers
     const questions = [
@@ -93,7 +96,7 @@
       // Add more questions here
     ];
 
-    let currentQuestion = 0;
+let currentQuestion = 0;
     let player1Score = 0;
     let player2Score = 0;
     let currentPlayer = 1;
@@ -103,12 +106,13 @@
     const submitButton = document.getElementById("submit");
     const scoreElement = document.getElementById("score");
     const ball = document.getElementById("ball");
+    const gameContainer = document.getElementById("game-container");
 
     function showQuestion() {
       questionElement.textContent = questions[currentQuestion].question;
     }
 
-   function checkAnswer() {
+    function checkAnswer() {
       const userAnswer = answerInput.value.trim().toLowerCase();
       if (userAnswer === questions[currentQuestion].answer.toLowerCase()) {
         if (currentPlayer === 1) {
@@ -143,12 +147,12 @@
       const player2 = document.getElementById("player2");
       const player1Rect = player1.getBoundingClientRect();
       const player2Rect = player2.getBoundingClientRect();
-      const ballRect = ball.getBoundingClientRect();
+      const gameContainerRect = gameContainer.getBoundingClientRect();
 
       if (currentPlayer === 1) {
-        ball.style.left = player1Rect.right + "px";
+        ball.style.left = player2Rect.left - gameContainerRect.left - 30 + "px";
       } else {
-        ball.style.left = player2Rect.left - ballRect.width + "px";
+        ball.style.left = player1Rect.right - gameContainerRect.left + 30 + "px";
       }
     }
 
